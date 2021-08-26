@@ -1,9 +1,9 @@
 <?php
 
 
-$firstNumber = (int)$_POST['firstNumber'];
-$secondNumber = (int)$_POST['secondNumber'];
-$mathAction = $_POST['mathAction'];
+$firstNumber = (int)($_POST['firstNumber'] ?? null);
+$secondNumber = (int)($_POST['secondNumber'] ?? null);
+$mathAction = $_POST['mathAction'] ?? null;
 
 
 
@@ -18,7 +18,7 @@ $mathAction = $_POST['mathAction'];
 <body>
 <h1>Calculator</h1>
 
-<?php switch ($_POST['mathAction']) {
+<?php switch ($mathAction) {
     case '+':
         echo "$firstNumber + $secondNumber", " = ", $firstNumber + $secondNumber;
         break;
