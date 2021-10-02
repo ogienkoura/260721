@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/lib/comments.php';
+
 $dates = getDates();
 $currentDate = $_GET['date'] ?? current($dates);
 
@@ -46,6 +47,12 @@ $comments = getComments($currentDate);
         <button type="submit" class="btn btn-success">Send</button>
     </form>
 
+    <a
+            class="btn btn-danger mt-3" href="/l10-chat/cleanbasket.php">Clean Basket</a>
+
+    <a
+            class="btn btn-warning mt-3" href="/l10-chat/restore-comment.php">Restore comment</a>
+
     <ul class="nav nav-tabs mt-3">
         <?php foreach ($dates as $date): ?>
             <li class="nav-item">
@@ -68,13 +75,13 @@ $comments = getComments($currentDate);
                     Author: <b><?= $comment['name'] ?> </b><br>
                     Created: <?= date('M d, Y, H:i', $comment['created_at']) ?><br>
                     <?php if (!empty($comment['updated_at'])): ?>
-                    Edited: <?= date('M d, Y, H:i', $comment['updated_at']) ?><br>
+                        Edited: <?= date('M d, Y, H:i', $comment['updated_at']) ?><br>
                     <?php endif; ?>
 
                     <a class="btn btn-sm btn-info"
                        href="/l10-chat/edit.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">Edit</a>
                     <a class="btn btn-sm btn-danger"
-                       href="/l10-chat/delete.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">Delete</a>
+                       href="/l10-chat/delete.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>&t=<?= time()?>">Delete</a>
                 </th>
                 <td><?= nl2br($comment['comment']) ?></td>
             </tr>

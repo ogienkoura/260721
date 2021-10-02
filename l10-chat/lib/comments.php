@@ -59,3 +59,26 @@ function refreshMessage(string $date, string $file, string $comment): void
 
     file_put_contents($rout, $comment);
 }
+
+
+function dropMessage(string $date, string $file): void
+{
+    $rout = MESSAGES_STORAGE . "{$date}/{$file}";
+    $basketStorage = basketDirectory();
+    if (!file_exists($rout)) {
+        exit('Comment not exists');
+    }
+        rename("$rout", "$basketStorage/$file");
+}
+
+
+
+function basketDirectory(): string
+{
+    $dirBasket = __DIR__ . '/../basket/' . date('Y-m-d');
+    if (!is_dir($dirBasket)) {
+        mkdir($dirBasket);
+    }
+
+    return $dirBasket;
+}

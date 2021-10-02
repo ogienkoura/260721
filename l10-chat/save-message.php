@@ -14,7 +14,7 @@ require_once __DIR__ . '/lib/response.php';
 $oldMessage = getComment($date, $file);
 
 
-$message = getMessageString($_POST['username'], $_POST['comment'], $oldMessage['created_at']);
+$message = getMessageString($_POST['username'], $_POST['comment'], $oldMessage['created_at'], time());
 refreshMessage($date, $file, $message);
 
 redirect("/l10-chat/index.php?date={$date}");
