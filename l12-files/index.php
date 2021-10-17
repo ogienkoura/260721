@@ -1,11 +1,19 @@
 <?php
 
 require_once __DIR__ . '/lib/directories.php';
+require_once __DIR__ . '/lib/files.php';
 require_once __DIR__ . '/breadcrumbs.php';
 
 $rout = prepareRout($_GET['rout'] ?? '');
-
+$isDir = (bool)($_GET['isDir'] ?? 1);
+$content = '';
+if (!$isDir) {
+    $content = renderFile($rout);
+    $rout = dirname($rout);
+}
 $items = readDirectory($rout);
+
+
 $crumbs = getCrumbs($rout);
 
 
@@ -36,7 +44,7 @@ $crumbs = getCrumbs($rout);
                 <input type="hidden" name="rout" value="<?= $rout ?>">
                 <div class="row">
                     <div class="col-8">
-                        <input type="file" name="upload" class="form-control">
+                        <input type="file" name="upload[]" multiple class="form-control">
                     </div>
                     <div class="col-4">
                         <button type="submit" class="btn btn-primary">Upload</button>
@@ -48,11 +56,11 @@ $crumbs = getCrumbs($rout);
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb mt-3">
             <?php foreach ($crumbs as $crumb): ?>
-                <?php if (!empty ($crumb['url'])) { ?>
-                    <li class="breadcrumb-item"><a href="<?= $crumb['url'] ?>"><?= $crumb['text'] ?></a></li>
+                <?php if ($crumb == end($crumbs)) { ?>
+                    <li class="breadcrumb-item" aria-current="page"><?= $crumb['text'] ?></li>
                 <?php } else {?>
-                <li class="breadcrumb-item active" aria-current="page"><?= $crumb['text'] ?></li>
-            <?php } endforeach; ?>
+                    <li class="breadcrumb-item"><a href="<?= $crumb['url'] ?>"><?= $crumb['text'] ?></a></li>
+                <?php } endforeach; ?>
         </ol>
     </nav>
     <div class="row">
@@ -60,7 +68,7 @@ $crumbs = getCrumbs($rout);
             <ul class="list-unstyled mt-3">
                 <?php foreach ($items as $item): ?>
                     <li>
-                        <a href="index.php?rout=<?= $item['rout'] ?>">
+                        <a href="index.php?rout=<?= $item['rout'] ?>&isDir=<?= (int)$item['is_dir'] ?>">
                             <?= $item ['name'] ?>
                         </a>
                     </li>
@@ -68,7 +76,7 @@ $crumbs = getCrumbs($rout);
             </ul>
         </div>
         <div class="ccl-8">
-
+            <?= $content ?>
         </div>
     </div>
 </div>
